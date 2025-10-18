@@ -10,6 +10,7 @@ import re
 parser = argparse.ArgumentParser(description='Export book')
 parser.add_argument("-ch", type=int, help="Chapter to export", default="99")
 parser.add_argument("-pdf", help="Export for PDF print", action="store_true", default=False)
+parser.add_argument("-pdfa5", help="Export for PDF print in A5 dimensions", action="store_true", default=False)
 parser.add_argument("-paperback", help="Export for paperback print", action="store_true", default=False)
 parser.add_argument("-kindle", help="Export the kindle version", action="store_true", default=False)
 parser.add_argument("-v", help="verbose", action="store_true", default=False)
@@ -72,6 +73,16 @@ elif args.pdf:
   pandoc_cmd = pandoc_cmd + "-V geometry:top=2cm "
   pandoc_cmd = pandoc_cmd + "-V geometry:bottom=2cm "
   pandoc_cmd = pandoc_cmd + "-V fontsize:8pt "
+elif args.pdfa5:
+  pandoc_cmd = pandoc_cmd + "--include-before-body cover.tex "
+  pandoc_cmd = pandoc_cmd + "-V classoption=twoside "
+  pandoc_cmd = pandoc_cmd + "-V geometry:paperwidth=148mm "
+  pandoc_cmd = pandoc_cmd + "-V geometry:paperheight=210mm "  
+  pandoc_cmd = pandoc_cmd + "-V geometry:left=1.5cm "
+  pandoc_cmd = pandoc_cmd + "-V geometry:right=1.5cm "
+  pandoc_cmd = pandoc_cmd + "-V geometry:top=1.5cm "
+  pandoc_cmd = pandoc_cmd + "-V geometry:bottom=1.5cm "
+  pandoc_cmd = pandoc_cmd + "-V fontsize=10pt "
 
 pandoc_cmd = pandoc_cmd + "--filter pandoc-fignos --filter pandoc-tablenos --filter pandoc-crossref --natbib -o book.tex metadata.txt "
 
